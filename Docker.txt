@@ -1,0 +1,441 @@
+########################################################
+Docker:
+ - Containerization tool
+ - Hello.java > Compilation > Hello
+ - Deploy the application to a server
+    - Requirements for deployment of java application:
+	    -Machine/Server
+		-java jdk/jre runtime - insatlled
+		-java libraries
+		-Hello executable
+ 
+ - Way of packaging a software with its dependencies
+    -template -> docker images
+	
+ - container - can only be created from an images
+ 
+ VMs V/S Container
+  
+  VMs:
+  -----
+  - Hardware level virtualization
+  - Virtualization layer -> Hypervisor
+  - Entire OS - install the OS - booting required
+  - Heavyweight
+  - Slow
+  
+  Containers:
+  -----------
+  - OS level virtualization
+  - containerization layer
+  - No entire OS - no booting required
+  - Lightweight
+  - Fast  
+
+Linux Kernel Capabilities:
+ - Namespaces
+ - cGroups
+
+ - a conatiner can only be created from an image -> determine the OS
+ - ideally contaioners are meant to run a singlr process
+   - PID 1 -> base process with process id as 1
+   - PID 1 process -> will determine the state of the container
+ - conatiners -> instances of image
+ - can create multiple containers from the same image
+ - each container will be isolated
+
+Layered concept - reuse layers
+ -File System - AuFS - Another Union File System
+
+Docker Architecture:
+ - Client - Server Architecture
+ - 3 Components
+     - Docker Server/ Daemon/ Host
+         - daemon process - dockerd
+         - responsible for creating & managing the docker object (conatiner, image, volume, networks)  		 
+	 
+	 - Docker Client/Client
+	     - docker cli/ command - docker
+		 - docker API calls
+		 - way for you to communicate with the docker server
+		 - can talk to multiple docker servers/daemons
+		 
+	 - Docker Registry
+	     - storage for docker images
+		 - Docker hub - default docker registry - managed by docker
+		 - hub.docker.com
+
+###############################################################################
+
+https://docs.docker.com/engine/install/
+
+Ubuntu:
+Ubuntu Impish 21.10
+Ubuntu Hirsute 21.04
+Ubuntu Focal 20.04 (LTS)
+Ubuntu Bionic 18.04 (LTS)
+
+Supported storage drivers:
+Docker Engine on Ubuntu supports overlay2, aufs and btrfs storage drivers.
+
+Uninstall old versions
+
+$ sudo apt-get remove docker docker-engine docker.io containerd runc
+ 
+Install using the repository
+
+$ sudo apt-get update
+$ sudo apt-get install ca-certificates curl gnupg lsb-release
+
+Add Docker’s official GPG key:
+
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+Install Docker Engine
+
+$ sudo apt-get update
+$ sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+List the versions available in your repo:
+
+$ apt-cache madison docker-ce
+
+Install a specific version using the version string from the second column, for example,
+
+$ sudo apt-get install docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> containerd.io
+
+Verify that Docker Engine is installed correctly by running the hello-world image.
+
+$ sudo docker run hello-world
+
+Docker:
+
+Verify docker installation:
+$ docker --version
+$ docker version
+
+Verify the entire setup:
+
+$ docker <action>  <options>
+$ docker run <image_name>
+$ docker run Hello-World
+
+latest -> default tag docker will be using
+
+https://hub.docker.com/
+
+$ docker search hello-world
+$ docker pull hello-world
+
+List the images available in the current machine:
+$ docker images
+[OR]
+$ docker images ls
+
+$ docker pull hello-world:linux
+$ docker images
+
+See the list of containers that are running:
+$ docker ps
+[OR]
+$ docker container ls
+
+History of containers (running & not running):
+$ docker ps -a
+
+#########################################################################
+
+$ docker run nginx
+
+$ docker stop <container_id/container_name>
+$ docker start <container_id/container_name>
+
+$ docker run -d nginx
+ -d -> detach
+ 
+$ docker run ubuntu
+
+$ docker run -ti ubuntu
+$ docker run -it ubuntu
+$ docker run -i -t ubuntu
+$ docker run -t -i ubuntu
+   -t  -> terminal
+   -i  -> interactive
+   
+Inside the container:
+ echo "myfile"  > myfile.txt
+
+Come out of a container: exit
+ 
+-Keyboard shortcut to come out of the container without exiting the PID 1 process
+-It will detach the terminal from the container  
+
+CTRL+P+Q
+
+Get back into the same container:
+ -2 ways
+ 1) Attach the PID 1 process of the container to the terminal screen
+ 
+ $ docker ps
+ $ docker attach <container_id>
+ 
+ $ ps -aux
+ 
+ 2) Create a new process inside the container and attach your terminal to that new process
+ 
+ $ docker ps 
+ $ docker exec -ti <container_id>  /bin/bash
+ 
+ Method 2 is preffered (Best practise)
+ 
+###############################################################################################
+
+Delete/Remove a stopped container:
+
+$ docker rm <container_id/container_name>
+$ docker rm container_id1 container_id2
+ 
+Delete/Remove a running container:
+$ docker rm -f <container_id/container_name>
+   -f   -> force removal
+   
+To cleanup:
+
+$ docker ps -aq
+$ docker rm -f $(docker -aq)
+
+Delete images:
+
+$ docker rmi <image_id/image_name_with_tag>
+$ docker images
+$ docker rmi image_id
+
+$ docker rmi -f <image_id>
+
+Port Mapping:
+
+source_port:target_port
+port that will be opened within the machine:port that will be open within the container
+
+-Random Port mapping:
+$ docker run -d -P nginx
+ -P -> random port mapping
+ 
+-Custom Port mapping:
+$ docker run -d -p 7676:80 nginx
+
+
+view port:
+$ docker port <container_id> 
+$ docker port f854ace7b7de
+
+Enter inside the nginx container:
+
+$ docker exec -ti <container_id>  /bin/bash
+
+Default serve location of nginx container: /usr/share/nginx/html
+Default serve file of nginx container: /usr/share/nginx/html/index.html
+
+# echo "My custom index page" > /usr/share/nginx/html/index.html
+
+# exit
+
+Volume Mapping:
+
+$ mkdir mydev
+$ echo "My index file" > mydev/index.html
+
+Docker containers by deault not persistant
+
+$ docker run --name mynginx -dP -v $PWD/mydev:/usr/share/nginx/html nginx 
+
+$ docker exec -ti mynginx /bin/bash
+
+# cd /usr/share/nginx/html
+# cat index.html
+
+[In a new tab]
+
+$ echo "My dev file" > mydev/dev.html
+
+
+
+$PWD/mydev   - VM server
+/usr/share/nginx/html - container
+
+#######################################################################################
+
+Docker:
+
+Custom Image Creation:
+ 
+ -creating a file - Dockerfile
+ -adding instructions - Dockerfile
+ -Build the image from the Dockerfile
+ -Instructions:
+    -FROM - used to specify the base image (FROM SCRATCH)/parent image (FROM parent_image_name)
+    -RUN - execute commands at the time of image creation
+	-COPY - to copy a file/files from the host machine to within the image
+	-EXPOSE - to specify the port that the container will be listening to when created from your custom image
+	-CMD - used to specify the default executable of containers created from your image
+	     - can be overwritten at the time of container creation
+		 - can be used to pass parameters to ENTRYPOINT instructions
+		 
+    -ENTRYPOINT - used to specify the default executable of containers
+                - cannot be overwritten easily
+				
+	
+$ mkdir demo
+$ cd demo
+$ vi Dockerfile
+
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install -y nginx
+COPY index-custom.html /var/www/html/index.html
+EXPOSE 80
+CMD nginx -g 'daemon off;'
+
+$ echo "WELCOME TO - CUSTOM NGINX" > index-custom.html
+
+Create custom image from the Dockerfile:
+
+$ docker build -t customnginx:v1 .
+
+You can use tag such as latest, v1 etc.
+
+If file is other than Dockerfile, then use -f <filename>
+
+$ docker build -t customnginx:v1 -f <docker_file_name> .
+
+ . -> demotes that the build context - is the current directory - Location of the Dockerfile
+ 
+##################################################################
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install -y nginx
+COPY index-custom.html /var/www/html/index.html
+EXPOSE 80
+#CMD nginx -g 'daemon off;'
+
+ENTRYPOINT /bin/bash
+
+
+#################################################################
+
+
+
+CMD ls -l
+
+/bin/bash ls -l
+pwd
+/bin/bash  pwd
+
+############################################################################
+
+Docker networking:
+
+$ docker network ls
+ 
+ Default networks available:
+ -bridge
+   -> default bridge network
+   -> default network for the container
+   
+ -host
+   -> used by docker
+   -> shared by both the host machine & docker
+ -none
+   -> if you don't want any network to be associated with a container
+   
+Default Bridge Network:
+  -> default network used
+  -> containers within this network will be able to communicate with each other using only the IP address
+  -> can't use the container name
+  -> doesn't support container restart -> when it comes to communication
+  
+User defined Bridge Network:
+  -> containers within this network will be able to communicate with each other using the container name itself
+  -> not dependent on the IP address
+  -> supports container restart
+  
+ Run a container:
+ 
+ $ docker run -ti --name centos centos /bin/bash
+ # yum install -y net-tools (inside container)
+ # ifconfig
+ 
+ [On a new terminal tab]
+ $ docker inspect centos
+ $ docker inspect <container_id>
+ 
+Create a custom image from a running container:
+$ docker commit <container_name> <image_name>
+$ docker commit centos centos-net
+$ docker images
+
+$ docker rm -f centos
+$ docker rmi centos
+
+Create a custom network:
+
+$ docker network create exnet
+$ docker network ls
+
+$ docker inspect network exnet
+[OR]
+$ docker inspect exnet
+
+Create a container in the custom network:
+$ docker run -ti --network exnet centos-net /bin/bash
+# ifconfig
+
+[On a new terminal tab]
+$ docker ps
+$ docker inspect <container_id>
+
+$ docker run -ti --name centos centos-net /bin/bash
+
+
+$ docker run -ti --rm --name centos centos-net /bin/bash
+     --rm -> when PID 1 process exited, it also removed from history
+	 
+$ docker network connect <network_name> <container_name>
+$ docker network connect exnet centos
+
+[On first terminal]
+# ifconfig
+
+[On the second terminal]
+$ docker inspect centos
+
+
+Disconnect a network:
+
+$ docker network disconnect <network_name> <container_name>
+
+$ docker network disconnect exnet centos
+
+Test the communication:
+[Terminal1]
+
+$ docker run -ti --name centos1 --network exnet centos-net /bin/bash
+
+[Terminal2]
+$ docker run -ti --name centos2 --network exnet centos-net /bin/bash
+
+#ping centos1
+
+$ docker rm -f $(docker ps -aq)
+
+$ docker run -dP --name mynginx nginx
+$ docker ps
+
+Browse: localhost:<mapped_port>
+
+$ docker logs <container_id/container_name>
+$ docker logs mynginx
+
+##########################################################################################
+
+
