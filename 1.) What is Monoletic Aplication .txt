@@ -1,0 +1,122 @@
+DevOps defination  = Implementing Automation at each and every stage.
+
+For DevOps (https://www.guru99.com/what-is-devops.html).
+
+
+Q1.) What is kubernetes?
+
+kubernetes is a application which manages of efficient handling the containers running on the cloud platform.
+
+
+1.) What is Monolithic Aplication ?
+
+All devlopers working on single file base coding then it is impecting our customers and that's why many times it domw or up condition base work.
+
+Also take a time lots of implemtation for this process.
+
+2.) what is Microservices ?
+
+It is usefull divide & rule process and it is working on cloud infra with poligrot programing.
+
+Microservices means containers....
+
+
+3.) Cloud Native Application
+
+We have configure auto scaling feature if running application servers used on 70% then automatically one more server create and auto run with same configurations and not impecting any other services.
+
+4.) What is Packer ?
+
+Packer Is a server templating tool (It is a take an Golden Images in cluster infra).
+
+Q2.) What is the Docker?
+
+Docker is a container runtime
+
+Container Engine Uses below mention applications:
+,
+(i) Docker (Popular and a none name Docker)
+(ii) Podman
+(iii) Cri-o
+(iv) kata
+
+Q3.) What is OCI (Open Container Initiative) guidelines.
+
+All oprating systems (OS) working on file system herharkey stander (FHS).
+
+One RKT (Rocket) comititer perform oprating system but that is change archive pertern that's a reason not in use.
+
+################################################## UBuntu ###########################
+
+
+
+Install Ubuntu and then start installation Docker===
+
+#wget -qO- https://get.docker.com/ | sh
+
+#systemctl status docker
+#docker info (Information)
+#docker version
+#docker images (Running container images verify)
+#docker pull lovelearnlinux/webserver:v1
+#docker pull httpd
+#docker pull nginx
+#docker inspect httpd:latest
+#docker inspect nginx:latest
+
+#docker images
+REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+httpd        latest    daab1fa13f86   2 weeks ago   145MB
+nginx        latest    904b8cb13b93   2 weeks ago   142MB
+#
+#docker run -d --name httpd httpd:latest  (-d means detach mode)
+29c3832398abfc633141ce9d708be68457c81264dfc9bfce75815919cc3de6e2
+#
+#docker ps
+CONTAINER ID   IMAGE          COMMAND              CREATED          STATUS          PORTS     NAMES
+29c3832398ab   httpd:latest   "httpd-foreground"   39 seconds ago   Up 38 seconds   80/tcp    httpd
+#
+#docker inspect httpd
+
+#docker stop httpd
+
+#docker ps
+
+#docker ps -a
+CONTAINER ID   IMAGE          COMMAND              CREATED        STATUS                    PORTS     NAMES
+29c3832398ab   httpd:latest   "httpd-foreground"   22 hours ago   Exited (0) 22 hours ago             httpd
+#
+#
+#docker rm httpd
+httpd
+#
+#
+#docker run -it --name httpd httpd:latest bin/bash (-it means interactive mode)
+root@5fe6b5a1681d:/usr/local/apache2#
+root@5fe6b5a1681d:/usr/local/apache2#
+
+(Right now httpd Container it is live testing process if we are exit for this process then container auto stop)
+
+(We are open another second session and check Container process)
+
+#docker ps
+CONTAINER ID   IMAGE          COMMAND       CREATED          STATUS          POR                                                                             TS     NAMES
+5fe6b5a1681d   httpd:latest   "/bin/bash"   20 minutes ago   Up 20 minutes   80/                                                                             tcp    httpd
+#
+#
+
+(Now we are exit running Container process)
+
+root@5fe6b5a1681d:/usr/local/apache2#
+root@5fe6b5a1681d:/usr/local/apache2# exit
+exit
+#
+#
+
+
+#
+#docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+#
+#
+#
