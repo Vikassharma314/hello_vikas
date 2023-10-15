@@ -1,0 +1,64 @@
+[root@Bang_ACD_GW2 ~]# asterisk -vvvvvvvvvvvvvvvvvvvvvvr |grep "88401756"
+    -- Executing AGI("SIP/172.16.11.121-0013376c", "NETMAD_API.pl|8840175671|1687866565.69609|||customer") in new stack
+    -- Executing Set("SIP/172.16.11.121-0013376c", "CustUniqueId=8840175671") in new stack
+
+[root@Bang_ACD_GW2 ~]# asterisk -vvvvvvvvvvvvvvvvvvvvvvr |grep "SIP/172.16.11.121-0013376c"
+    -- Stopped music on hold on SIP/172.16.11.121-0013376c
+    -- Told SIP/172.16.11.121-0013376c in Netmed_General_INB their queue position (which was 1)
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-0013376c
+    -- Stopped music on hold on SIP/172.16.11.121-0013376c
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-0013376c
+    -- Local/s@VQ_Context-2e72,1 answered SIP/172.16.11.121-0013376c
+    -- Stopped music on hold on SIP/172.16.11.121-0013376c
+    -- Started music on hold, class 'netmed_hold', on SIP/172.16.11.121-0013376c
+    -- Stopped music on hold on SIP/172.16.11.121-0013376c
+
+[root@Bang_ACD_GW2 ~]#
+[root@Bang_ACD_GW2 ~]#
+[root@Bang_ACD_GW2 ~]#
+[root@Bang_ACD_GW2 ~]# asterisk -vvvvvvvvvvvvvvvvvvvvvvr |grep "88401756"
+    -- Executing SetCallerID("SIP/172.16.11.121-001337bf", "8840175671") in new stack
+    -- Executing AGI("SIP/172.16.11.121-001337bf", "NETMAD_API.pl|8840175671|1687866672.69798|||customer") in new stack
+    -- Executing Set("SIP/172.16.11.121-001337bf", "CustUniqueId=8840175671") in new stack
+    -- Executing AGI("SIP/172.16.11.121-001337bf", "NETMAD_API.pl|8840175671|1687866672.69798|8840175671|ORDER|account|") in new stack
+
+[root@Bang_ACD_GW2 ~]# asterisk -vvvvvvvvvvvvvvvvvvvvvvr |grep "SIP/172.16.11.121-001337bf"
+  == CDR updated on SIP/172.16.11.121-001337bf
+    -- Executing Set("SIP/172.16.11.121-001337bf", "ivrspath=ivrs->Wel->English->Contacts->New->CCA") in new stack
+    -- Executing Goto("SIP/172.16.11.121-001337bf", "CONTEXT_NETMEDS_CCA|s|1") in new stack
+    -- Executing GotoIfTime("SIP/172.16.11.121-001337bf", "00:00-08:59|mon-sat|*|*?a|1") in new stack
+    -- Executing GotoIfTime("SIP/172.16.11.121-001337bf", "21:00-23:59|mon-sat|*|*?a|1") in new stack
+    -- Executing GotoIfTime("SIP/172.16.11.121-001337bf", "00:01-08:59|sun|*|*?a|1") in new stack
+    -- Executing GotoIfTime("SIP/172.16.11.121-001337bf", "21:00-23:59|sun|*|*?a|1") in new stack
+    -- Executing Set("SIP/172.16.11.121-001337bf", "ivrspath=ivrs->Wel->English->Contacts->New->CCA->CCA") in new stack
+    -- Executing NoOp("SIP/172.16.11.121-001337bf", "") in new stack
+    -- Executing GotoIf("SIP/172.16.11.121-001337bf", "0?s|8:s|10") in new stack
+    -- Executing Goto("SIP/172.16.11.121-001337bf", "Netmed_General_INB|s|1") in new stack
+    -- Executing Goto("SIP/172.16.11.121-001337bf", "s|101") in new stack
+    -- Executing CheckList("SIP/172.16.11.121-001337bf", "8840175671|Netmed_General_INB|0") in new stack
+    -- Executing GotoIf("SIP/172.16.11.121-001337bf", "0?n|1") in new stack
+    -- Executing NoOp("SIP/172.16.11.121-001337bf", "") in new stack
+    -- Executing NoOp("SIP/172.16.11.121-001337bf", "") in new stack
+    -- Executing VQueue("SIP/172.16.11.121-001337bf", "Netmed_General_INB||||601") in new stack
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-001337bf
+    -- Stopped music on hold on SIP/172.16.11.121-001337bf
+    -- Told SIP/172.16.11.121-001337bf in Netmed_General_INB their queue position (which was 7)
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-001337bf
+    -- Stopped music on hold on SIP/172.16.11.121-001337bf
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-001337bf
+    -- Stopped music on hold on SIP/172.16.11.121-001337bf
+    -- Told SIP/172.16.11.121-001337bf in Netmed_General_INB their queue position (which was 5)
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-001337bf
+    -- Stopped music on hold on SIP/172.16.11.121-001337bf
+    -- Told SIP/172.16.11.121-001337bf in Netmed_General_INB their queue position (which was 5)
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-001337bf
+    -- Stopped music on hold on SIP/172.16.11.121-001337bf
+    -- Told SIP/172.16.11.121-001337bf in Netmed_General_INB their queue position (which was 4)
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-001337bf
+    -- Stopped music on hold on SIP/172.16.11.121-001337bf
+    -- Told SIP/172.16.11.121-001337bf in Netmed_General_INB their queue position (which was 3)
+    -- Started music on hold, class 'default', on SIP/172.16.11.121-001337bf
+    -- SIP/172.16.99.42-00133837 answered SIP/172.16.11.121-001337bf
+    -- Stopped music on hold on SIP/172.16.11.121-001337bf
+    -- Attempting native bridge of SIP/172.16.11.121-001337bf and SIP/172.16.99.42-00133837
+
